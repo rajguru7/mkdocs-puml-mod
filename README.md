@@ -1,4 +1,4 @@
-![logo](.docs/logo.png)
+![logo](docs/logo.png)
 
 [![PyPI version](https://badge.fury.io/py/mkdocs_puml.svg)](https://badge.fury.io/py/mkdocs_puml)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/mkdocs_puml)](https://pypistats.org/packages/mkdocs-puml)
@@ -94,7 +94,7 @@ using remote [plantuml.com](https://www.plantuml.com/plantuml/).
 You can use `PlantUML` converter without `mkdocs`. Below is the example,
 
 ```python
-from mkdocs_puml.puml import PlantUML
+from mkdocs_puml_mod.puml import PlantUML
 
 puml_url = "https://www.plantuml.com/plantuml"
 
@@ -138,6 +138,22 @@ in `mkdocs.yml` config file by using `puml_keyword` parameter.
 After all pages are parsed, `plantuml` plugin requests PlantUML service
 with the collected diagrams. After the responses are received, the package
 substitutes uuid codes in markdown files with the corresponding `svg` images.
+
+## Changes (Saurabh Rajguru)
+
+Allows the plugin to work when using pymdownx.superfences with snippets enabled.
+Have moved all the event handling code to post_page event so that pymdownx.snippets can work on puml snippets inside the fences.
+
+If using superfences, you will need to add the below lines in superfences config in mkdocs.yml
+
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:          #pymdown-extensions installed
+      custom_fences:
+        - name: puml
+          class: puml
+          format: !!python/name:mkdocs_puml_mod.fence.fence_puml
+```
 
 ## License
 

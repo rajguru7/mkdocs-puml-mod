@@ -4,9 +4,13 @@ import uuid
 
 from mkdocs.config.config_options import Type, Config
 from mkdocs.plugins import BasePlugin
+from mkdocs import utils
 
-from mkdocs_puml.puml import PlantUML
+from mkdocs_puml_mod.puml import PlantUML
+from bs4 import BeautifulSoup
 
+SUPERFENCES_EXTENSION = 'pymdownx.superfences'
+CUSTOM_FENCE_FN = 'fence_puml' 
 
 class PlantUMLPlugin(BasePlugin):
     """MKDocs plugin that converts puml diagrams into SVG images.
@@ -64,52 +68,8 @@ class PlantUMLPlugin(BasePlugin):
         """
         self.puml = PlantUML(self.config['puml_url'], num_workers=self.config['num_workers'])
         self.puml_keyword = self.config['puml_keyword']
-        self.regex = re.compile(rf"```{self.puml_keyword}(.+?)```", flags=re.DOTALL)
+        self.regex = re.compile(rf"<pre class={self.puml_keyword}>(.+?)</pre>", flags=re.DOTALL)
         return config
-
-    def on_page_markdown(self, markdown: str, *args, **kwargs) -> str:
-        """Event to fire for each .md page.
-
-        Here, all ``puml`` code blocks are found and added to self.diagrams
-        with the corresponding uuid key.
-
-        Then, <pre class="...">{uuid of diagram}</pre> tags are added to
-        the markdown page.
-
-        Args:
-            markdown: Markdown page in which to look for ``puml`` diagrams.
-
-        Returns:
-            Updated markdown page
-        """
-        schemes = self.regex.findall(markdown)
-
-        for v in schemes:
-            id_ = str(uuid.uuid4())
-            self.diagrams[id_] = v
-            markdown = markdown.replace(
-                f"```{self.puml_keyword}{v}```",
-                f'<pre class="{self.pre_class_name}">{id_}</pre>'
-            )
-
-        return markdown
-
-    def on_env(self, env, *args, **kwargs):
-        """The event is fired when jinja environment is configured.
-        Such as it is fired once when all .md pages are processed,
-        we can use it to request PlantUML service to convert our
-        diagrams.
-
-        Args:
-            env: jinja environment
-        Returns:
-            Jinja environment
-        """
-        resp = self.puml.translate(self.diagrams.values())
-
-        for key, svg in zip(self.diagrams.keys(), resp):
-            self.diagrams[key] = svg
-        return env
 
     def on_post_page(self, output: str, *args, **kwargs) -> str:
         """The event is fired after HTML page is rendered.
@@ -122,10 +82,29 @@ class PlantUMLPlugin(BasePlugin):
         Returns:
             HTML page containing SVG diagrams
         """
-        schemes = self.uuid_regex.findall(output)
-        for v in schemes:
-            output = output.replace(
-                f'<pre class="{self.pre_class_name}">{v}</pre>',
-                f'<div class="{self.div_class_name}">{self.diagrams[v]}</div>'
-            )
-        return output
+        if "puml" not in output:
+            # Skip unecessary HTML parsing
+            return output
+        soup = BeautifulSoup(output, 'html.parser')
+
+        pre_code_tags = (soup.select("pre code.puml") or 
+                        soup.select("pre code.language-puml") or
+                         soup.select("pre.puml code"))
+        no_found = len(pre_code_tags)
+        if no_found:
+            puml_diags = []
+            for tag in pre_code_tags:
+                content = tag.text
+                new_tag = soup.new_tag("div", attrs={"class": "puml"})
+                #new_tag.append(content)
+                puml_diags.append(content)
+                # replace the parent:
+                tag.parent.replaceWith(new_tag)
+            # Count the diagrams <div class = 'mermaid'> ... </div>
+            #puml_diags = [tag.text for tag in soup.select("div.puml")]
+
+            resp = self.puml.translate(puml_diags)
+            for tag,svg in zip(soup.select("div.puml"),resp):
+                #tag.string.replace_with(BeautifulSoup(svg, 'html.parser'))
+                tag.append(BeautifulSoup(svg, 'html.parser'))
+        return str(soup)

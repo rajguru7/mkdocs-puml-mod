@@ -1,5 +1,5 @@
-from mkdocs_puml.plugin import PlantUMLPlugin
-from mkdocs_puml.puml import PlantUML
+from mkdocs_puml_mod.plugin import PlantUMLPlugin
+from mkdocs_puml_mod.puml import PlantUML
 from tests.conftest import BASE_PUML_KEYWORD, BASE_PUML_URL, CUSTOM_PUML_KEYWORD
 from tests.plugins.conftest import is_uuid_valid
 

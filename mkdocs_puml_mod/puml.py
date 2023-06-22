@@ -6,7 +6,7 @@ from xml.dom.minidom import Element, parseString  # nosec
 
 import requests
 
-from mkdocs_puml.encoder import encode
+from mkdocs_puml_mod.encoder import encode
 
 
 class PlantUML:
