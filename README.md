@@ -141,6 +141,12 @@ substitutes uuid codes in markdown files with the corresponding `svg` images.
 
 ## Changes (Saurabh Rajguru)
 
+Have combined code from 2 repos.
+Credits:
+
+1. pugong, Fralau <https://github.com/fralau/mkdocs-mermaid2-plugin>
+2. Mikhail Kravets <https://github.com/MikhailKravets/mkdocs_puml>
+
 Allows the plugin to work when using pymdownx.superfences with snippets enabled.
 Have moved all the event handling code to post_page event so that pymdownx.snippets can work on puml snippets inside the fences.
 

@@ -1,7 +1,7 @@
 # Test
 
 ```puml
---8<-- "docs/work/mkdocs-puml-mod/tests/test.puml"
+--8<-- "docs/personal/mkdocs-puml-mod/tests/test.puml"
 ```
 
 ```puml
