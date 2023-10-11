@@ -10,7 +10,13 @@
 step of on_post_page event it should be replaced with the SVG.</p>
 
 {% for v in uuids %}
-<pre class="{{ uuid_class }}">{{ v }}</pre>
+<pre class="{{ uuid_class }}">
+<code>
+"@startyaml
+hi: hello
+@endyaml"
+</code>
+</pre>
 {% endfor %}
 
 </body>

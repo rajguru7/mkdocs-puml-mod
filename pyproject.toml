@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "mkdocs-puml-mod"
-authors = [{name = "Mikhail Kravets, Saurabh Rajguru", email = "michkravets@gmail.com"}]
+authors = [{name = "Saurabh Rajguru"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
@@ -12,12 +12,16 @@ dynamic = ["version", "description"]
 requires-python = ">=3.8"
 dependencies = [
     "requests >= 2.27, < 3.0",
+    "beautifulsoup4",
     "markdown >= 3.2.1, < 4.0",
     "mkdocs >= 1.3, < 2.0"
 ]
 
 [project.urls]
 Home = "https://github.com/rajguru7/mkdocs-puml-mod"
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest", "pytest-cov", "twine"]
 
 [project.entry-points."mkdocs.plugins"]
 plantuml = "mkdocs_puml_mod.plugin:PlantUMLPlugin"

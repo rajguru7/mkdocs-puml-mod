@@ -16,7 +16,8 @@ def diagram_and_encoded():
     """The fixture to return puml diagram and
     the encoded by plantuml.com string
     """
-    return "@startuml\nBob -> Alice : hello\n@enduml", "SoWkIImgAStDuNBAJrBGjLDmpCbCJbMmKiX8pSd9vt98pKi1IW80"
+    return "@startuml\nBob -> Alice : hello\n@enduml", \
+            "SoWkIImgAStDuNBAJrBGjLDmpCbCJbMmKiX8pSd9vt98pKi1IW80"
 
 
 @pytest.fixture(scope="package")

@@ -1,7 +1,8 @@
+from unittest.mock import MagicMock
 from mkdocs_puml_mod.plugin import PlantUMLPlugin
 from mkdocs_puml_mod.puml import PlantUML
 from tests.conftest import BASE_PUML_KEYWORD, BASE_PUML_URL, CUSTOM_PUML_KEYWORD
-from tests.plugins.conftest import is_uuid_valid
+#from tests.plugins.conftest import is_uuid_valid
 
 
 def test_on_config(plugin_config):
@@ -26,42 +27,46 @@ def test_on_config_custom_keyword(plugin_config_custom_keyword):
     assert plugin.puml_keyword == CUSTOM_PUML_KEYWORD
 
 
-def test_on_page_markdown(plant_uml_plugin, md_lines):
-    plant_uml_plugin.on_page_markdown("\n".join(md_lines))
-
-    assert len(plant_uml_plugin.diagrams) == 2
-
-    for key in plant_uml_plugin.diagrams.keys():
-        assert is_uuid_valid(key)
-
-    for val in plant_uml_plugin.diagrams.values():
-        assert "@startuml" in val and "@enduml" in val
-
-
-def test_on_page_markdown_custom_keyword(plant_uml_plugin_custom_keyword, md_lines):
-    plant_uml_plugin_custom_keyword.on_page_markdown("\n".join(md_lines))
-
-    assert len(plant_uml_plugin_custom_keyword.diagrams) == 1
-
-    for key in plant_uml_plugin_custom_keyword.diagrams.keys():
-        assert is_uuid_valid(key)
-
-    for val in plant_uml_plugin_custom_keyword.diagrams.values():
-        assert "@startuml" in val and "@enduml" in val
+#def test_on_page_markdown(plant_uml_plugin, md_lines):
+#    plant_uml_plugin.on_page_markdown("\n".join(md_lines))
+#
+#    assert len(plant_uml_plugin.diagrams) == 2
+#
+#    for key in plant_uml_plugin.diagrams.keys():
+#        assert is_uuid_valid(key)
+#
+#    for val in plant_uml_plugin.diagrams.values():
+#        assert "@startuml" in val and "@enduml" in val
 
 
-def test_on_env(mock_requests, plant_uml_plugin, diagrams_dict, plugin_environment):
-    plant_uml_plugin.diagrams = diagrams_dict
-    plant_uml_plugin.on_env(plugin_environment)
+#def test_on_page_markdown_custom_keyword(plant_uml_plugin_custom_keyword, md_lines):
+#    plant_uml_plugin_custom_keyword.on_page_markdown("\n".join(md_lines))
+#
+#    assert len(plant_uml_plugin_custom_keyword.diagrams) == 1
+#
+#    for key in plant_uml_plugin_custom_keyword.diagrams.keys():
+#        assert is_uuid_valid(key)
+#
+#    for val in plant_uml_plugin_custom_keyword.diagrams.values():
+#        assert "@startuml" in val and "@enduml" in val
 
-    assert mock_requests.call_count == len(diagrams_dict)
 
-    for v in diagrams_dict.values():
-        assert v.startswith('<svg')
+#def test_on_env(mock_requests, plant_uml_plugin, diagrams_dict, plugin_environment):
+#    plant_uml_plugin.diagrams = diagrams_dict
+#    plant_uml_plugin.on_env(plugin_environment)
+#
+#    assert mock_requests.call_count == len(diagrams_dict)
+#
+#    for v in diagrams_dict.values():
+#        assert v.startswith('<svg')
 
 
 def test_on_post_page(plant_uml_plugin, diagrams_dict, html_page):
-    plant_uml_plugin.diagrams = diagrams_dict
+    plant_uml_plugin = PlantUMLPlugin()
+    plant_uml_plugin.puml = PlantUML(base_url="https://www.plantuml.com/plantuml/")
+    # comment below line to send request to plantuml
+    plant_uml_plugin.puml.translate = MagicMock(return_value="<svg></svg>") 
     output = plant_uml_plugin.on_post_page(html_page)
 
-    assert output.count(f'<div class="{plant_uml_plugin.div_class_name}">') == len(diagrams_dict)
+    assert output.count(f'<div class="{plant_uml_plugin.div_class_name}">') == \
+            len(diagrams_dict)

@@ -1,17 +1,18 @@
-![logo](docs/logo.png)
 
-[![PyPI version](https://badge.fury.io/py/mkdocs_puml.svg)](https://badge.fury.io/py/mkdocs_puml)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/mkdocs_puml)](https://pypistats.org/packages/mkdocs-puml)
+[![PyPI version](https://badge.fury.io/py/mkdocs-puml-mod.svg)](https://badge.fury.io/py/mkdocs-puml-mod)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/mkdocs-puml-mod)](https://pypistats.org/packages/mkdocs-puml-mod)
+
+**This repo is a fork of <https://github.com/MikhailKravets/mkdocs_puml>**
 
 `mkdocs_puml` is a fast and simple package that brings plantuml diagrams to MkDocs
-documentation.
+documentation. `mkdocs-puml-mod` will allow you to use plantuml diagrams when [superfences](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/) is being used.
 
 ## Install
 
 Run the following command to install the package
 
 ```shell
-pip install mkdocs_puml
+pip install mkdocs-puml-mod
 ```
 
 ## How to use
@@ -139,13 +140,13 @@ After all pages are parsed, `plantuml` plugin requests PlantUML service
 with the collected diagrams. After the responses are received, the package
 substitutes uuid codes in markdown files with the corresponding `svg` images.
 
-## Changes (Saurabh Rajguru)
+## Acknowledgements
 
 Have combined code from 2 repos.
 Credits:
 
 1. pugong, Fralau <https://github.com/fralau/mkdocs-mermaid2-plugin>
-2. Mikhail Kravets <https://github.com/MikhailKravets/mkdocs_puml>
+2. Mikhail Kravets <https://github.com/MikhailKravets/mkdocs_puml> 
 
 Allows the plugin to work when using pymdownx.superfences with snippets enabled.
 Have moved all the event handling code to post_page event so that pymdownx.snippets can work on puml snippets inside the fences.
@@ -165,4 +166,3 @@ markdown_extensions:
 
 The project is licensed under [MIT license](LICENSE).
 
-Diagram icon created by [Freepik](https://www.flaticon.com/free-icon/flow-chart_4411911?related_id=4411911&origin=search).

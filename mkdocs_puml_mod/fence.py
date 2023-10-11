@@ -1,4 +1,4 @@
-from mkdocs import utils
+#from mkdocs import utils
 
 def fence_puml(source, language, css_class, options, md, 
             classes=None, id_value='', custom=True, **kwargs):

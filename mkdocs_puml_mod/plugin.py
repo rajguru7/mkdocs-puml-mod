@@ -1,10 +1,8 @@
 import typing
 import re
-import uuid
 
 from mkdocs.config.config_options import Type, Config
 from mkdocs.plugins import BasePlugin
-from mkdocs import utils
 
 from mkdocs_puml_mod.puml import PlantUML
 from bs4 import BeautifulSoup
@@ -26,15 +24,17 @@ class PlantUMLPlugin(BasePlugin):
     Attributes:
         div_class_name (str): the class that will be set to resulting <div> tag
                               containing the diagram
-        pre_class_name (str): the class that will be set to intermediate <pre> tag
-                              containing uuid code
+        pre_class_name (str): the class that will be set to intermediate <pre> 
+                              tag containing uuid code
         config_scheme (str): config scheme to set by user in mkdocs.yml file
 
         regex (re.Pattern): regex to find all puml code blocks
         uuid_regex (re.Pattern): regex to find all uuid <pre> blocks
         puml (PlantUML): PlantUML instance that requests PlantUML service
-        diagrams (dict): Dictionary containing the diagrams (puml and later svg) and their keys
-        puml_keyword (str): keyword used to find PlantUML blocks within Markdown files
+        diagrams (dict): Dictionary containing the diagrams (puml and later svg)
+                         and their keys
+        puml_keyword (str): keyword used to find PlantUML blocks within 
+                            Markdown files
     """
     div_class_name = "puml"
     pre_class_name = "diagram-uuid"
@@ -47,7 +47,10 @@ class PlantUMLPlugin(BasePlugin):
 
     def __init__(self):
         self.regex: typing.Optional[typing.Any] = None
-        self.uuid_regex = re.compile(rf'<pre class="{self.pre_class_name}">(.+?)</pre>', flags=re.DOTALL)
+        self.uuid_regex = re.compile(
+                rf'<pre class="{self.pre_class_name}">(.+?)</pre>', 
+                flags=re.DOTALL
+            )
 
         self.puml: typing.Optional[PlantUML] = None
         self.diagrams = {
@@ -60,15 +63,17 @@ class PlantUMLPlugin(BasePlugin):
         self.puml instance is populated in this event.
 
         Args:
-            config: Full mkdocs.yml config file. To access configs of PlantUMLPlugin only,
-                    use self.config attribute.
+            config: Full mkdocs.yml config file. To access configs of 
+                    PlantUMLPlugin only, use self.config attribute.
 
         Returns:
             Full config of the mkdocs
         """
-        self.puml = PlantUML(self.config['puml_url'], num_workers=self.config['num_workers'])
+        self.puml = PlantUML(self.config['puml_url'], 
+                            num_workers=self.config['num_workers'])
         self.puml_keyword = self.config['puml_keyword']
-        self.regex = re.compile(rf"<pre class={self.puml_keyword}>(.+?)</pre>", flags=re.DOTALL)
+        self.regex = re.compile(rf"<pre class={self.puml_keyword}>(.+?)</pre>",
+                flags=re.DOTALL)
         return config
 
     def on_post_page(self, output: str, *args, **kwargs) -> str:

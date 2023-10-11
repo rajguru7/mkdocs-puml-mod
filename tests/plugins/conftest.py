@@ -90,6 +90,6 @@ def md_lines():
 def html_page(plugin_environment, diagrams_dict):
     template = plugin_environment.get_template("output.html")
     return template.render(
-        uuid_class=PlantUMLPlugin.pre_class_name,
+        uuid_class=PlantUMLPlugin.div_class_name,
         uuids=diagrams_dict.keys()
     )
