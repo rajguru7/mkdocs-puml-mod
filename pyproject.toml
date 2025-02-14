@@ -21,7 +21,7 @@ dependencies = [
 Home = "https://github.com/rajguru7/mkdocs-puml-mod"
 
 [project.optional-dependencies]
-dev = ["ruff", "pytest", "pytest-cov", "twine"]
+dev = ["ruff", "pytest", "pytest-cov", "twine", "bandit"]
 
 [project.entry-points."mkdocs.plugins"]
 plantuml = "mkdocs_puml_mod.plugin:PlantUMLPlugin"

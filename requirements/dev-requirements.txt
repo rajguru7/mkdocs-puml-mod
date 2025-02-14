@@ -4,6 +4,8 @@
 #
 #    pip-compile --extra=dev --output-file=requirements/dev-requirements.txt
 #
+bandit==1.7.7
+    # via mkdocs-puml-mod (pyproject.toml)
 beautifulsoup4==4.12.2
     # via mkdocs-puml-mod (pyproject.toml)
 certifi==2023.7.22
@@ -64,6 +66,8 @@ packaging==23.2
     #   pytest
 pathspec==0.11.2
     # via mkdocs
+pbr==6.0.0
+    # via stevedore
 pkginfo==1.9.6
     # via twine
 platformdirs==3.11.0
@@ -86,6 +90,7 @@ python-dateutil==2.8.2
     # via ghp-import
 pyyaml==6.0.1
     # via
+    #   bandit
     #   mkdocs
     #   pyyaml-env-tag
 pyyaml-env-tag==0.1
@@ -102,7 +107,9 @@ requests-toolbelt==1.0.0
 rfc3986==2.0.0
     # via twine
 rich==13.6.0
-    # via twine
+    # via
+    #   bandit
+    #   twine
 ruff==0.0.292
     # via mkdocs-puml-mod (pyproject.toml)
 secretstorage==3.3.3
@@ -111,6 +118,8 @@ six==1.16.0
     # via python-dateutil
 soupsieve==2.5
     # via beautifulsoup4
+stevedore==5.2.0
+    # via bandit
 twine==4.0.2
     # via mkdocs-puml-mod (pyproject.toml)
 urllib3==2.0.6
